@@ -1,7 +1,7 @@
 async function init(){
   let rustApp = null;
   try {
-    // rustApp = await import('../pkg');
+    rustApp = await import('../pkg');
   } catch (error) {
     console.log("Failed to import package");
     console.log(error);
@@ -14,8 +14,7 @@ async function init(){
 
   fileReader.onloadend = () =>{
     const base64 = fileReader.result.replace(/^data:image\/(png|jpeg|jpg);base64,/g,'')
-    
-    // rustApp.grayscale(base64);
+    rustApp.grayscale(base64);
   }
 
 
@@ -24,4 +23,4 @@ async function init(){
   })
 }
 
-init()
+await init()

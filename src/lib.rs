@@ -1,11 +1,38 @@
 use wasm_bindgen::prelude::*;
 use web_sys::console::log_1 as log;
 use base64::decode;
-#[wasm_bindgen]
-pub fn grayscale(encoded_file:&str){
-    
-    log(&"Grayscale called".into());
+use image::load_from_memory;
+use image::ImageOutputFormat::Png;
 
-    let base64_to_vector = decode(encoded_file).unwrap();
-    log(&"Image decoded".into());
+#[wasm_bindgen]
+pub fn grayscale(encoded_file: &str) {
+  log(&"Grayscale called".into());
+
+  let base64_to_vector = decode(encoded_file).unwrap();
+  log(&"Image decoded".into());
+
+  let mut img = load_from_memory(&base64_to_vector).unwrap();
+  log(&"Image loaded".into());
+
+  img = img.grayscale();
+  log(&"Grayscale effect applied".into());
+
+  let mut buffer = vec![];
+  img.write_to(&mut buffer, Png).unwrap();
+  log(&"New image written to memory".into());
+}
+
+pub fn add(left: usize, right: usize) -> usize {
+    left + right
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_works() {
+        let result = add(2, 2);
+        assert_eq!(result, 4);
+    }
 }
